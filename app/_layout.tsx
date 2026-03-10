@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
+import { IslandsProvider } from '@/context/IslandsContext';
 import { SettingsProvider, useSettings } from '@/context/SettingsContext';
 
 export const unstable_settings = {
@@ -25,8 +26,11 @@ function InnerLayout() {
 
 export default function RootLayout() {
   return (
-    <SettingsProvider>
-      <InnerLayout />
-    </SettingsProvider>
+    <IslandsProvider>
+      <SettingsProvider>
+        <InnerLayout />
+      </SettingsProvider>
+    </IslandsProvider>
   );
 }
+

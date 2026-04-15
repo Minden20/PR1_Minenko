@@ -6,7 +6,7 @@ import { useSettings, THEME_COLORS, FONT_SIZES, ACCENT_COLORS } from '@/context/
 export default function LoginScreen() {
   const { login } = useAuth();
   const { theme, fontSize, accentColor } = useSettings();
-  const [username, setUsername] = useState('admin');
+  const [username, setUsername] = useState('Sincere@april.biz');
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -44,7 +44,7 @@ export default function LoginScreen() {
             color: colors.text,
             fontSize: fonts.base
           }]}
-          placeholder="Логін (напр. admin)"
+          placeholder="Логін (напр. Sincere@april.biz)"
           placeholderTextColor={colors.text + '55'}
           value={username}
           onChangeText={setUsername}

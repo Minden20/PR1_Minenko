@@ -26,19 +26,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    // Fake auth delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    
-    // Simplistic auth check (in real app, compare passwords securely)
-    const foundUser = FAKE_USERS.find(u => u.username === username);
-    
-    // We accept any password for valid usernames, or we could strict check:
-    // For our mockup, password must equal 'password' for demo purposes, or matching username.
-    if (foundUser && (password === '123456' || password === foundUser.username)) {
-      setUser(foundUser);
-      return true;
+    try {
+      const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${username}`);
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+          const apiUser = data[0];
+          setUser({
+            id: apiUser.id.toString(),
+            username: apiUser.username,
+            name: apiUser.name,
+            email: apiUser.email,
+            role: 'Explorer',
+          });
+          return true;
+        }
+      }
+      return false;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

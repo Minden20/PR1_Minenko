@@ -5,6 +5,7 @@ export default function AppLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Опції' }} />
+      <Stack.Screen name="island/[id]" options={{ presentation: 'card', title: 'Деталі острова' }} />
     </Stack>
   );
 }

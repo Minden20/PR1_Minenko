@@ -2,6 +2,7 @@ import { IslandCard } from '@/components/IslandCard';
 import { useIslands, type Island } from '@/context/IslandsContext';
 import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useSettings } from '@/context/SettingsContext';
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
     Alert,
     FlatList,
@@ -14,6 +15,7 @@ import {
 } from 'react-native';
 
 export function IslandListScreen() {
+    const router = useRouter();
     const { theme, fontSize, accentColor } = useSettings();
     const { islands, removeIsland } = useIslands();
     const colors = THEME_COLORS[theme];
@@ -138,6 +140,20 @@ export function IslandListScreen() {
                                                 </Text>
                                             </View>
                                         </View>
+
+                                        <TouchableOpacity
+                                            style={[styles.deleteBtn, { backgroundColor: accent, marginBottom: 10 }]}
+                                            onPress={() => {
+                                                const id = selectedIsland.id;
+                                                setSelectedIsland(null);
+                                                router.push(`/island/${id}`);
+                                            }}
+                                            activeOpacity={0.8}
+                                        >
+                                            <Text style={[styles.deleteBtnText, { fontSize: fonts.base }]}>
+                                                📋 Детальніше
+                                            </Text>
+                                        </TouchableOpacity>
 
                                         {/* Delete button */}
                                         <TouchableOpacity

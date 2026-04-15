@@ -9,6 +9,7 @@ export interface Island {
     resources: string;
     dangerLevel: number;
     emoji?: string;
+    imageUri?: string;
 }
 
 const INITIAL_ISLANDS: Island[] = [
@@ -38,12 +39,14 @@ interface IslandsContextType {
     islands: Island[];
     addIsland: (island: Omit<Island, 'id'>) => void;
     removeIsland: (id: string) => void;
+    updateIsland: (id: string, data: Partial<Island>) => void;
 }
 
 const IslandsContext = createContext<IslandsContextType>({
     islands: INITIAL_ISLANDS,
     addIsland: () => { },
     removeIsland: () => { },
+    updateIsland: () => { },
 });
 
 export function IslandsProvider({ children }: { children: ReactNode }) {
@@ -58,8 +61,12 @@ export function IslandsProvider({ children }: { children: ReactNode }) {
         setIslands(prev => prev.filter(i => i.id !== id));
     };
 
+    const updateIsland = (id: string, data: Partial<Island>) => {
+        setIslands(prev => prev.map(i => i.id === id ? { ...i, ...data } : i));
+    };
+
     return (
-        <IslandsContext.Provider value={{ islands, addIsland, removeIsland }}>
+        <IslandsContext.Provider value={{ islands, addIsland, removeIsland, updateIsland }}>
             {children}
         </IslandsContext.Provider>
     );

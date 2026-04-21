@@ -1,4 +1,4 @@
-import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useSettings } from '@/context/SettingsContext';
+import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useStore } from '@/store/useStore';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -10,7 +10,9 @@ interface TabButtonProps {
 }
 
 export function TabButton({ title, icon, isActive, onPress }: TabButtonProps) {
-    const { theme, fontSize, accentColor } = useSettings();
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
+    const accentColor = useStore(state => state.accentColor);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
     const accent = ACCENT_COLORS[accentColor];

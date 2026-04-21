@@ -1,12 +1,14 @@
 import { SettingsScreen } from '@/components/SettingsScreen';
-import { useAuth } from '@/context/AuthContext';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { useSettings, THEME_COLORS, FONT_SIZES, ACCENT_COLORS } from '@/context/SettingsContext';
+import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useStore } from '@/store/useStore';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export default function SettingsRoute() {
-  const { user, logout } = useAuth();
-  const { theme, fontSize, accentColor } = useSettings();
-  
+  const user = useStore(state => state.user);
+  const logout = useStore(state => state.logout);
+  const theme = useStore(state => state.theme);
+  const fontSize = useStore(state => state.fontSize);
+  const accentColor = useStore(state => state.accentColor);
+
   const colors = THEME_COLORS[theme];
   const fonts = FONT_SIZES[fontSize];
   const accent = ACCENT_COLORS[accentColor];
@@ -19,7 +21,7 @@ export default function SettingsRoute() {
             Профіль
           </Text>
           <Text style={{ color: colors.text, fontSize: fonts.base, marginBottom: 4 }}>
-            Ім'я: <Text style={{ fontWeight: 'bold' }}>{user.name}</Text>
+            Ім&apos;я: <Text style={{ fontWeight: 'bold' }}>{user.name}</Text>
           </Text>
           <Text style={{ color: colors.text, fontSize: fonts.base, marginBottom: 4 }}>
             Логін: <Text style={{ fontWeight: 'bold' }}>{user.username}</Text>
@@ -27,11 +29,11 @@ export default function SettingsRoute() {
           <Text style={{ color: colors.text, fontSize: fonts.base, marginBottom: 16 }}>
             Роль: <Text style={{ fontWeight: 'bold', color: accent }}>{user.role}</Text>
           </Text>
-          
+
           <Button title="Вийти" color="#ff4444" onPress={logout} />
         </View>
       )}
-      
+
       <SettingsScreen />
     </View>
   );

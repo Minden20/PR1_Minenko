@@ -1,5 +1,4 @@
-import { useIslands } from '@/context/IslandsContext';
-import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useSettings } from '@/context/SettingsContext';
+import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useStore } from '@/store/useStore';
 import React, { useState } from 'react';
 import {
     Alert,
@@ -19,8 +18,10 @@ const TERRAIN_OPTIONS = [
 ];
 
 export function AddIslandScreen({ onAdded }: { onAdded?: () => void }) {
-    const { theme, fontSize, accentColor } = useSettings();
-    const { addIsland } = useIslands();
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
+    const accentColor = useStore(state => state.accentColor);
+    const addIsland = useStore(state => state.addIsland);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
     const accent = ACCENT_COLORS[accentColor];

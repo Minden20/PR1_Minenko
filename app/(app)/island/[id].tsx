@@ -1,14 +1,16 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useStore } from '@/store/useStore';
 import * as ImagePicker from 'expo-image-picker';
-import { useSettings, THEME_COLORS, FONT_SIZES, ACCENT_COLORS } from '@/context/SettingsContext';
-import { useIslands } from '@/context/IslandsContext';
+import { useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function IslandDetailScreen() {
     const { id } = useLocalSearchParams();
-    const { islands, updateIsland } = useIslands();
-    const { theme, fontSize, accentColor } = useSettings();
+    const islands = useStore(state => state.islands);
+    const updateIsland = useStore(state => state.updateIsland);
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
+    const accentColor = useStore(state => state.accentColor);
 
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
@@ -30,9 +32,9 @@ export default function IslandDetailScreen() {
     };
 
     if (!island) return (
-         <View style={[styles.centered, { backgroundColor: colors.background }]}>
-             <Text style={{ color: colors.text }}>Острів не знайдено</Text>
-         </View>
+        <View style={[styles.centered, { backgroundColor: colors.background }]}>
+            <Text style={{ color: colors.text }}>Острів не знайдено</Text>
+        </View>
     );
 
     return (
@@ -51,8 +53,8 @@ export default function IslandDetailScreen() {
                 </View>
             )}
 
-            <TouchableOpacity 
-                style={[styles.btn, { backgroundColor: accent }]} 
+            <TouchableOpacity
+                style={[styles.btn, { backgroundColor: accent }]}
                 onPress={pickImage}
             >
                 <Text style={styles.btnText}>📷 {island.imageUri ? 'Змінити зображення' : 'Прикріпити зображення'}</Text>
@@ -61,9 +63,9 @@ export default function IslandDetailScreen() {
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Text style={[styles.title, { color: accent, fontSize: fonts.title }]}>{island.name}</Text>
                 <Text style={[styles.terrain, { color: colors.textSecondary, fontSize: fonts.base }]}>📍 {island.terrain}</Text>
-                
+
                 <Text style={[styles.desc, { color: colors.text, fontSize: fonts.base }]}>{island.description}</Text>
-                
+
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
                 <Text style={[styles.stats, { color: colors.text, fontSize: fonts.base }]}>

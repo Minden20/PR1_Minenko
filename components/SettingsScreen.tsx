@@ -2,13 +2,13 @@ import {
     ACCENT_COLORS,
     FONT_SIZES,
     THEME_COLORS,
-    useSettings,
+    useStore,
     type AccentColorOption,
     type FontSizeOption,
     type ThemeMode,
-} from '@/context/SettingsContext';
+} from '@/store/useStore';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 function OptionRow({
     label,
@@ -23,7 +23,9 @@ function OptionRow({
     onSelect: (val: string) => void;
     renderOption?: (opt: string, isActive: boolean) => React.ReactNode;
 }) {
-    const { theme, fontSize, accentColor } = useSettings();
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
+    const accentColor = useStore(state => state.accentColor);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
     const accent = ACCENT_COLORS[accentColor];
@@ -88,7 +90,14 @@ const COLOR_OPTIONS: { key: AccentColorOption; label: string; hex: string }[] = 
 ];
 
 export function SettingsScreen() {
-    const { theme, setTheme, fontSize, setFontSize, accentColor, setAccentColor } = useSettings();
+    const theme = useStore(state => state.theme);
+    const setTheme = useStore(state => state.setTheme);
+    const fontSize = useStore(state => state.fontSize);
+    const setFontSize = useStore(state => state.setFontSize);
+    const accentColor = useStore(state => state.accentColor);
+    const setAccentColor = useStore(state => state.setAccentColor);
+    const sessionOnly = useStore(state => state.sessionOnly);
+    const toggleSessionOnly = useStore(state => state.toggleSessionOnly);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
     const accent = ACCENT_COLORS[accentColor];
@@ -184,6 +193,23 @@ export function SettingsScreen() {
                 }}
             />
 
+            <Text style={[styles.sectionTitle, { color: accent, fontSize: fonts.subtitle }]}>
+                Режим сесії
+            </Text>
+            <View style={[styles.optionRow, { backgroundColor: colors.surface, borderColor: colors.border, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
+                <View style={{ flex: 1, paddingRight: 16 }}>
+                    <Text style={[styles.optionLabel, { color: colors.text, fontSize: fonts.base, marginBottom: 4 }]}>Лише на поточну сесію</Text>
+                    <Text style={{ color: colors.textSecondary, fontSize: fonts.small }}>
+                        Якщо увімкнено, зміни не будуть збережені локально до пристрою після закриття додатку.
+                    </Text>
+                </View>
+                <Switch
+                    value={sessionOnly}
+                    onValueChange={toggleSessionOnly}
+                    trackColor={{ false: colors.border, true: accent }}
+                    thumbColor={colors.surface}
+                />
+            </View>
 
         </ScrollView>
     );

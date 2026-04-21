@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import useSWR from 'swr';
-import { useSettings, THEME_COLORS, FONT_SIZES } from '@/context/SettingsContext';
+import { useStore, THEME_COLORS, FONT_SIZES } from '@/store/useStore';
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function UsersScreen() {
-    const { theme, fontSize } = useSettings();
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
 

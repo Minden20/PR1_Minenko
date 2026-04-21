@@ -3,19 +3,16 @@ import { Stack, useRouter, useSegments, useRootNavigationState } from 'expo-rout
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect } from 'react';
-
-import { IslandsProvider } from '@/context/IslandsContext';
-import { SettingsProvider, useSettings } from '@/context/SettingsContext';
-import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { useStore } from '@/store/useStore';
 
 export const unstable_settings = {
   // Ensure that reloading on `/unmatched` keeps a back button present.
   initialRouteName: '(app)',
 };
 
-function RootLayoutNav() {
-  const { theme } = useSettings();
-  const { user } = useAuth();
+export default function RootLayout() {
+  const theme = useStore((state) => state.theme);
+  const user = useStore((state) => state.user);
   const segments = useSegments();
   const router = useRouter();
   const rootNavigationState = useRootNavigationState();
@@ -44,17 +41,5 @@ function RootLayoutNav() {
       </Stack>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
     </ThemeProvider>
-  );
-}
-
-export default function RootLayout() {
-  return (
-    <AuthProvider>
-      <IslandsProvider>
-        <SettingsProvider>
-          <RootLayoutNav />
-        </SettingsProvider>
-      </IslandsProvider>
-    </AuthProvider>
   );
 }

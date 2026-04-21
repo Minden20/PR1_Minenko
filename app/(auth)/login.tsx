@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
-import { useAuth } from '@/context/AuthContext';
-import { useSettings, THEME_COLORS, FONT_SIZES, ACCENT_COLORS } from '@/context/SettingsContext';
+import { useStore, THEME_COLORS, FONT_SIZES, ACCENT_COLORS } from '@/store/useStore';
+
+import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
-  const { login } = useAuth();
-  const { theme, fontSize, accentColor } = useSettings();
+  const router = useRouter();
+  const login = useStore(state => state.login);
+  const theme = useStore(state => state.theme);
+  const fontSize = useStore(state => state.fontSize);
+  const accentColor = useStore(state => state.accentColor);
   const [username, setUsername] = useState('Sincere@april.biz');
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
@@ -23,6 +27,8 @@ export default function LoginScreen() {
     
     if (!success) {
       setError('Невірний логін або пароль');
+    } else {
+      router.replace('/(app)/(tabs)/islands');
     }
   };
 

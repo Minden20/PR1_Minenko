@@ -1,11 +1,12 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { useSettings, THEME_COLORS, ACCENT_COLORS } from '@/context/SettingsContext';
+import { useStore, THEME_COLORS, ACCENT_COLORS } from '@/store/useStore';
 
 import { Text } from 'react-native';
 
 export default function TabLayout() {
-  const { theme, accentColor } = useSettings();
+  const theme = useStore(state => state.theme);
+  const accentColor = useStore(state => state.accentColor);
   const colors = THEME_COLORS[theme];
   const accent = ACCENT_COLORS[accentColor];
 

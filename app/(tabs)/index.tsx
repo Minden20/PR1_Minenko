@@ -1,7 +1,7 @@
 import { AddIslandScreen } from '@/components/AddIslandScreen';
 import { IslandListScreen } from '@/components/IslandListScreen';
 import { SettingsScreen } from '@/components/SettingsScreen';
-import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useSettings } from '@/context/SettingsContext';
+import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useStore } from '@/store/useStore';
 import React, { useRef, useState } from 'react';
 import {
   Animated,
@@ -25,7 +25,9 @@ const TABS: { key: ActiveTab; label: string; icon: string }[] = [
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('islands');
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { theme, fontSize, accentColor } = useSettings();
+  const theme = useStore(state => state.theme);
+  const fontSize = useStore(state => state.fontSize);
+  const accentColor = useStore(state => state.accentColor);
   const colors = THEME_COLORS[theme];
   const fonts = FONT_SIZES[fontSize];
   const accent = ACCENT_COLORS[accentColor];

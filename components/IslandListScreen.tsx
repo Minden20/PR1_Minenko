@@ -1,6 +1,5 @@
 import { IslandCard } from '@/components/IslandCard';
-import { useIslands, type Island } from '@/context/IslandsContext';
-import { ACCENT_COLORS, FONT_SIZES, THEME_COLORS, useSettings } from '@/context/SettingsContext';
+import { useStore, type Island, ACCENT_COLORS, FONT_SIZES, THEME_COLORS } from '@/store/useStore';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
@@ -16,8 +15,11 @@ import {
 
 export function IslandListScreen() {
     const router = useRouter();
-    const { theme, fontSize, accentColor } = useSettings();
-    const { islands, removeIsland } = useIslands();
+    const theme = useStore(state => state.theme);
+    const fontSize = useStore(state => state.fontSize);
+    const accentColor = useStore(state => state.accentColor);
+    const islands = useStore(state => state.islands);
+    const removeIsland = useStore(state => state.removeIsland);
     const colors = THEME_COLORS[theme];
     const fonts = FONT_SIZES[fontSize];
     const accent = ACCENT_COLORS[accentColor];
